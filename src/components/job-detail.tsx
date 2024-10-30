@@ -11,9 +11,9 @@ import { UseFormReturn } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 
 interface JobDetailSectionProps {
-  form: UseFormReturn<IApplicationForm>;
+  readonly form: UseFormReturn<IApplicationForm>;
 }
-export function JobDetailSection({ form }: JobDetailSectionProps  ) {
+export function JobDetailSection({ form }: JobDetailSectionProps) {
 
   return (
     <div id="job-detail" className="space-y-6">

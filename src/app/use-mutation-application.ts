@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useEffect } from "react";
+import { useState,  useCallback } from "react";
 import { IApplicationForm } from "./types";
 
 export const FormSchema = z.object({
@@ -33,16 +33,15 @@ export type FormValues = z.infer<typeof FormSchema>;
 export function useApplicationForm() {
   const [progress, setProgress] = useState(0);
 
-  const submitApplication = async (data: FormValues) => {
-    const response = await fetch('/api/applications', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    return response.json();
-  };
+  const calculateProgress = useCallback((formValues: IApplicationForm) => {
+    const totalFields = Object.keys(formValues).length;
+    const filledFields = Object.values(formValues).filter(value => {
+      if (value instanceof Date) return true;
+      return value !== undefined && value !== '' && value !== null;
+    }).length;
+    
+    return Math.round((filledFields / totalFields) * 100);
+  }, []);
 
   const form = useForm<IApplicationForm>({
     resolver: zodResolver(FormSchema),
@@ -55,29 +54,23 @@ export function useApplicationForm() {
       nama_perusahaan: "",
       detail_pekerjaan: "",
       language: "",
-    },
+    }
   });
 
-  const calculateProgress = () => {
-    const formValues = form.getValues();
-    const totalFields = Object.keys(formValues).length;
-    const filledFields = Object.values(formValues).filter(value => {
-      if (value instanceof Date) return true;
-      return value !== undefined && value !== '' && value !== null;
-    }).length;
+  form.watch((data) => {
+    setProgress(calculateProgress(data as IApplicationForm));
+  });
 
-    console.log(formValues);
-    console.log(filledFields, totalFields);
-    return Math.round((filledFields / totalFields) * 100);
-  };
-
-  useEffect(() => {
-    const subscription = form.watch(() => {
-      setProgress(calculateProgress());
+  const submitApplication = async (data: FormValues) => {
+    const response = await fetch('/api/applications', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     });
-
-    return () => subscription.unsubscribe();
-  }, [form.watch, calculateProgress]);
+    return response.json();
+  };
 
   return {
     form,

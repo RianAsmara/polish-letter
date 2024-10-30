@@ -1,4 +1,5 @@
 import { getEnv } from '@/utils/get-env';
+import { consoleLog } from '@/utils/logger';
 
 
 interface HTTPParams<T> {
@@ -47,7 +48,7 @@ async function logger<T>({ config, response, data }: LoggerParams<T>) {
 async function http<T>(path: string, { config }: Partial<HTTPParams<T>>): Promise<T> {
   const { API_URL } = getEnv();
 
-  const token = session?.accessToken;
+  // const token = session?.accessToken;
 
 
   const URL = `${API_URL}${path}`;
@@ -56,7 +57,7 @@ async function http<T>(path: string, { config }: Partial<HTTPParams<T>>): Promis
     ...config,
     headers: {
       ...config?.headers,
-      Authorization: `Bearer ${token ?? ''}`,
+      Authorization: `Bearer adasdasd`,
     },
   } as RequestInit;
 
