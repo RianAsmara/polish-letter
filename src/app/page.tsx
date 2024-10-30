@@ -1,101 +1,86 @@
-import Image from "next/image";
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { Progress } from "@/components/ui/progress";
+import { Card } from "@/components/ui/card";
+import { PersonalInfoSection } from "../components/personal-info";
+import { useApplicationForm } from "./use-mutation-application";
+import { CompanyInfoSection } from "../components/company-info";
+import { JobDetailSection } from "../components/job-detail";
+import FooterSection from "@/components/footer";
+import HeaderSection from "@/components/header";
+import LanguageSection from "@/components/language";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { form, progress } = useApplicationForm();
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="flex flex-col min-h-screen items-center gap-4 sm:gap-8">
+      <HeaderSection />
+      {/* <TourGuide /> */}
+
+      <main className="flex flex-col items-center gap-6 sm:gap-8 max-w-4xl w-full px-4 sm:px-8">
+        <div className="text-center space-y-4">
+          <h1 className="text-2xl sm:text-4xl font-bold">
+            Buat{" "}
+            <span className="text-purple-500 underline decoration-wavy">
+              Surat Lamaran
+            </span>
+            <br className="hidden sm:block" />
+            Sesuai Pekerjaan Impianmu
+          </h1>
         </div>
+
+        <Card className="w-full p-4 sm:p-8">
+          <div className="mb-8">
+            <div className="flex justify-between text-sm text-gray-600 mb-2">
+              <span className="font-medium">Progress Pengisian</span>
+              <span className="font-semibold">{progress}%</span>
+            </div>
+            <Progress 
+              value={progress} 
+              className="h-2 w-full"
+              indicatorClassName="bg-gradient-to-r from-violet-600 to-fuchsia-500"
+            />
+          </div>
+
+          <div className="p-6 sm:p-8">
+            <Form {...form}>
+              <form
+                className="space-y-10" 
+              >
+                <PersonalInfoSection form={form} />
+                <CompanyInfoSection form={form} />
+                <JobDetailSection form={form} />
+                <LanguageSection form={form} />
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-violet-600 to-fuchsia-500 hover:from-violet-700 hover:to-fuchsia-600 text-white font-semibold py-3.5 px-6 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-violet-500/25 relative overflow-hidden group"
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-2 text-base">
+                    Generate Surat Lamaran
+                    <svg
+                      className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                      />
+                    </svg>
+                  </span>
+                </Button>{" "}
+              </form>
+            </Form>
+          </div>
+        </Card>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <FooterSection />
     </div>
   );
 }
