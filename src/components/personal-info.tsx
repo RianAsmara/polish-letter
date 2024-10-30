@@ -16,7 +16,7 @@ import { UseFormReturn } from "react-hook-form";
 import { IApplicationForm } from "../app/types";
 
 interface PersonalInfoSectionProps {
-  form: UseFormReturn<IApplicationForm>;
+  readonly form: UseFormReturn<IApplicationForm>;
 }
 
 export function PersonalInfoSection({ form }: PersonalInfoSectionProps) {

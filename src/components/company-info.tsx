@@ -10,7 +10,7 @@ import { IApplicationForm } from "../app/types";
 import { UseFormReturn } from "react-hook-form";
 
 interface CompanyInfoSectionProps {
-  form: UseFormReturn<IApplicationForm>;
+  readonly form: UseFormReturn<IApplicationForm>;
 }
 export function CompanyInfoSection({ form }: CompanyInfoSectionProps) {
 
